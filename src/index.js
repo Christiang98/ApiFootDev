@@ -1,9 +1,13 @@
 const express = require("express")
 const People = require("./models/peopleModel")
 const Player = require("./models/playerModel")
+const Club = require("./models/clubModel")
+const MyClub = require("./models/myClubModel")
 const peopleRouter = require("./routes/peopleRouter")(People)
 const playerRouter = require("./routes/playerRoutes")(Player)
 const authRouter = require("./routes/authRouter")(People)
+const clubRouter = require("./routes/clubRouter")(Club)
+const myClubRouter = require("./routes/myClubRouter")(MyClub)
 const errorHandler = require("./middleware/errorHandler")
 dotEnv = require("dotenv").config()
 const { expressjwt } = require("express-jwt")
@@ -35,7 +39,7 @@ app.use((err, _, res, next) => {
 }
 )
 
-app.use("/api", peopleRouter, playerRouter)
+app.use("/api", peopleRouter, playerRouter,clubRouter, myClubRouter)
 app.use("/", authRouter)
 app.use(errorHandler)
 
