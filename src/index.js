@@ -4,20 +4,21 @@ const Player = require("./models/playerModel")
 const peopleRouter = require("./routes/peopleRouter")(People)
 const playerRouter = require("./routes/playerRoutes")(Player)
 const authRouter = require("./routes/authRouter")(People)
-const errorHandler=require("./middleware/errorHandler")
-dotEnv=require("dotenv").config()
+const errorHandler = require("./middleware/errorHandler")
+dotEnv = require("dotenv").config()
 const { expressjwt } = require("express-jwt")
+const cors = require("cors")
 
 const app = express()
 
 require("./database/db")
-
+app.use (cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.all(
     "/*",
-    expressjwt({ secret:process.env.SECRET, algorithms: ["HS256"] }).unless({
+    expressjwt({ secret: process.env.SECRET, algorithms: ["HS256"] }).unless({
         path: ["/auth/login", "/auth/register"]
     })
 )
@@ -34,10 +35,10 @@ app.use((err, _, res, next) => {
 }
 )
 
-app.use("/api",peopleRouter,playerRouter)
-app.use("/",authRouter)
+app.use("/api", peopleRouter, playerRouter)
+app.use("/", authRouter)
 app.use(errorHandler)
 
-app.listen(5000,()=>{
+app.listen(5000, () => {
     console.log("Server is running!")
 })
