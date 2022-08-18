@@ -8,7 +8,7 @@ const generateToken = (data) => {
       username: data
     },
     process.env.SECRET,
-    { expiresIn: '70d' }
+    { expiresIn: '120d' }
   )
 
   return token
